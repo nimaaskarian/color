@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
 
   double l1 = relative_luminance(c1);
   double l2 = relative_luminance(c2);
+  double ratio = contrast_ratio(l1, l2);
   if (wcag_check) {
-    double ratio = contrast_ratio(l1, l2);
     if (ratio >= 7.) {
       puts("full AAA pass");
     } else if (ratio >= 4.5) {
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
       puts("failed");
     }
   } else {
-    printf("%.3f\n", contrast_ratio(l1,l2));
+    printf("%.3f\n", ratio);
   }
 
   return EXIT_SUCCESS;

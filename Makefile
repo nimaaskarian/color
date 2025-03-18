@@ -18,7 +18,7 @@ cbetween: ${OBJ_CBT}
 .c.o:
 	${CC} -c ${CFLAGS} $<
 
-color.h: color.def.h
+color.h: color.def.h color.c
 	echo '#ifndef COLOR_H' > $@
 	echo '#define COLOR_H' >> $@
 	cat color.def.h >> $@

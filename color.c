@@ -110,7 +110,7 @@ void printColorRgb(Color color)
   printf("%d,%d,%d\n", color.r,color.g,color.b);
 }
 
-double get_luma(Color color)
+double get_luminance(Color color)
 {
   return sqrt(0.299*color.r*color.r+0.587*color.g*color.g+0.114*color.b*color.b);
 }

@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
     }
   }
   get_color(&color, argv[optind++]);
-  double luma = get_luma(color);
-  // MIN_luma: 0
-  // MAX_luma: 255
-  // a color is dark when luma <= %50 * MAX_luma 
+  double luminance = get_luminance(color);
+  // min: 0
+  // max: 255
+  // a color is dark when luminance <= 127.5 (0.5*max) 
   if (print_luma) {
-    printf("luma: %f\n", luma);
+    printf("%.3f\n", luminance);
   } else {
-    int is_dark = luma <= 127.5;
+    int is_dark = luminance <= 127.5;
     printf("%d\n", is_dark);
   }
 
