@@ -33,11 +33,8 @@ int main(int argc, char *argv[])
     fprintf(stderr, "no colors provided\n");
     exit(EXIT_FAILURE);
   }
-  if (get_color_from_hexstr(&c1, argv[optind]) == EXIT_FAILURE)
-      get_color_from_rgbstr(&c1,argv[optind]);
-  optind++;
-  if (get_color_from_hexstr(&c2, argv[optind]) == EXIT_FAILURE)
-      get_color_from_rgbstr(&c2,argv[optind]);
+  get_color(&c1, argv[optind++]);
+  get_color(&c2, argv[optind++]);
 
   double l1 = relative_luminance(c1);
   double l2 = relative_luminance(c2);

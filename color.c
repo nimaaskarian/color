@@ -12,16 +12,16 @@ Color black()
   return output;
 }
 
-StdColor color2stdcolor(Color color)
+sRGB color2srgb(Color color)
 {
-  StdColor output;
+  sRGB output;
   output.r = (double)color.r/255;
   output.g = (double)color.g/255;
   output.b = (double)color.b/255;
   return output;
 }
 
-Color stdcolor2color(StdColor color)
+Color stdcolor2color(sRGB color)
 {
   Color output;
   output.r = (int)(color.r*255);
@@ -38,7 +38,7 @@ double contrast_ratio(double luma1, double luma2)
      return ( luma2 +0.05 )/( luma1 +0.05);
 }
 
-void normalize_stdcolor_for_luma(double *param)
+void normalize_srgb_for_luma(double *restrict param)
 {
   if (*param <= 0.04045)
     *param = *param/12.92;
@@ -49,16 +49,16 @@ void normalize_stdcolor_for_luma(double *param)
 double relative_luminance(Color color)
 {
 
-  StdColor srgb = color2stdcolor(color);
+  sRGB srgb = color2srgb(color);
 
-  normalize_stdcolor_for_luma(&srgb.r);
-  normalize_stdcolor_for_luma(&srgb.g);
-  normalize_stdcolor_for_luma(&srgb.b);
+  normalize_srgb_for_luma(&srgb.r);
+  normalize_srgb_for_luma(&srgb.g);
+  normalize_srgb_for_luma(&srgb.b);
 
   return 0.2126*srgb.r + 0.7152*srgb.g + 0.0722 * srgb.b;
 }
 
-void three_digit_hex2six(Color *color) 
+void three_digit_hex2six(Color *restrict color) 
 {
   // if its a three digit hex color like #ABC, we want to have
   // #AABBCC so we do this:
@@ -68,7 +68,7 @@ void three_digit_hex2six(Color *color)
   color->b += color->b*16;
 }
 
-int get_color_from_hexstr(Color *color, char *str)
+int get_color_from_hex(Color *restrict color, char *restrict str)
 {
   int colorsFound = sscanf(str, "#%02x%02x%02x", &color->r,&color->g,&color->b);
   if(colorsFound != 3) {
@@ -80,11 +80,18 @@ int get_color_from_hexstr(Color *color, char *str)
   return EXIT_SUCCESS;
 }
 
-int get_color_from_rgbstr(Color *color, char*charPtr)
+int get_color_from_rgb(Color *restrict color, char*charPtr)
 {
   if (sscanf(charPtr, "%d,%d,%d", &color->r, &color->g, &color->b) != 3) {
     return EXIT_FAILURE;
   }
+  return EXIT_SUCCESS;
+}
+
+int get_color(Color *restrict c, char *restrict str)
+{
+  if (get_color_from_hex(c, str) == EXIT_FAILURE)
+    return get_color_from_rgb(c, str);
   return EXIT_SUCCESS;
 }
 
@@ -93,7 +100,7 @@ void print_color (Color color)
   printf("#%02x%02x%02x\n", color.r,color.g,color.b);
 }
 
-void print_stdcolor (StdColor srgb)
+void print_srgb (sRGB srgb)
 {
   print_color(stdcolor2color(srgb));
 }

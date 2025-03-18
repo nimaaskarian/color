@@ -1,3 +1,5 @@
 *.o
 contrast
 isdark
+color.h
+cbetween
