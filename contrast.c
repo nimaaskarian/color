@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
 {
   bool wcag_check = 0;
   int c;
-  int option_index = 0;
   while (true) {
     static struct option long_options[] =
           {
