@@ -41,15 +41,15 @@ int main(int argc, char *argv[])
   sRGB c1srgb = color2srgb(c1);
   sRGB c2srgb = color2srgb(c2);
 
-  sRGB colorDifference;
-  colorDifference.r = (c2srgb.r - c1srgb.r)/count;
-  colorDifference.g = (c2srgb.g - c1srgb.g)/count;
-  colorDifference.b = (c2srgb.b - c1srgb.b)/count;
+  sRGB difference;
+  difference.r = (c2srgb.r - c1srgb.r)/count;
+  difference.g = (c2srgb.g - c1srgb.g)/count;
+  difference.b = (c2srgb.b - c1srgb.b)/count;
 
   for (int i = 1-include_self; i < count+include_self; ++i) {
-    sRGB color, addition;
-    color_mul(addition, colorDifference ,i);
-    color_add(color,c1srgb,  addition);
+    sRGB color;
+    color_mul(color, difference, i);
+    color_add(color, color, c1srgb);
     print_srgb(color);
   }
   return EXIT_SUCCESS;
