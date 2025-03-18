@@ -9,7 +9,7 @@ contrast:  prints contrast ratio of two colors
   --wcag-check, -w           check if passes the wcag standard and prints the status
 
 
-isdark: prints whether the color is 
+isdark: prints 1 if the color is dark, 0 if its not
 [Usage]
   isdark [Flags] <color>
 
