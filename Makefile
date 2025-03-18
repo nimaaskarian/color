@@ -1,3 +1,5 @@
+PREFIX := /usr/local
+
 OBJ_CON := color.o contrast.o
 OBJ_DRK := color.o isdark.o
 LDFLAGS := -lm
@@ -15,3 +17,10 @@ contrast: ${OBJ_CON}
 install: all
 	cp -f contrast ${DESTDIR}${PREFIX}/bin
 	cp -f isdark ${DESTDIR}${PREFIX}/bin
+
+clean:
+	rm *.o isdark contrast
+
+uninstall:
+	rm ${DESTDIR}${PREFIX}/bin/contrast
+	rm ${DESTDIR}${PREFIX}/bin/isdark
