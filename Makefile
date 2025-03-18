@@ -18,10 +18,6 @@ cbetween: ${OBJ_CBT}
 .c.o:
 	${CC} -c ${CFLAGS} $<
 
-install: all
-	cp -f contrast ${DESTDIR}${PREFIX}/bin
-	cp -f isdark ${DESTDIR}${PREFIX}/bin
-
 color.h: color.def.h
 	echo '#ifndef COLOR_H' > $@
 	echo '#define COLOR_H' >> $@
@@ -30,10 +26,14 @@ color.h: color.def.h
 	echo '#endif //COLOR_H' >> $@
 
 clean:
-	rm *.o isdark contrast color.h
+	rm *.o isdark contrast color.h cbetween
 
-.PHONY: clean
+install: all
+	cp -f contrast ${DESTDIR}${PREFIX}/bin
+	cp -f isdark ${DESTDIR}${PREFIX}/bin
+	cp -f cbetween ${DESTDIR}${PREFIX}/bin
 
 uninstall:
 	rm ${DESTDIR}${PREFIX}/bin/contrast
 	rm ${DESTDIR}${PREFIX}/bin/isdark
+	rm ${DESTDIR}${PREFIX}/bin/cbetween
