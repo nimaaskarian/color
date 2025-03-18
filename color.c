@@ -5,11 +5,8 @@
 
 Color black()
 {
-  Color output;
-  output.r = 0;
-  output.g = 0;
-  output.b = 0;
-  return output;
+  Color black = {0, 0, 0};
+  return black;
 }
 
 sRGB color2srgb(Color color)
@@ -30,12 +27,12 @@ Color stdcolor2color(sRGB color)
   return output;
 }
 
-double contrast_ratio(double luma1, double luma2)
+double contrast_ratio(Color c1, Color c2)
 {
-  if (luma1>luma2)
-     return ( luma1 +0.05 )/( luma2 +0.05);
-  else
-     return ( luma2 +0.05 )/( luma1 +0.05);
+  double l1 = relative_luminance(c1);
+  double l2 = relative_luminance(c2);
+  if (l1>l2) return ( l1 +0.05 )/( l2 +0.05);
+   return ( l2 +0.05 )/( l1 +0.05);
 }
 
 void normalize_srgb_for_luma(double *restrict param)
@@ -95,22 +92,12 @@ int get_color(Color *restrict c, char *restrict str)
   return EXIT_SUCCESS;
 }
 
-void print_color (Color color)
+void print_color(Color color)
 {
   printf("#%02x%02x%02x\n", color.r,color.g,color.b);
 }
 
-void print_srgb (sRGB srgb)
+void print_srgb(sRGB srgb)
 {
   print_color(stdcolor2color(srgb));
-}
-
-void printColorRgb(Color color)
-{
-  printf("%d,%d,%d\n", color.r,color.g,color.b);
-}
-
-double get_luminance(Color color)
-{
-  return sqrt(0.299*color.r*color.r+0.587*color.g*color.g+0.114*color.b*color.b);
 }

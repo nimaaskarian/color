@@ -9,11 +9,11 @@ int main(int argc, char *argv[])
   Color color;
 
   int c;
-  bool print_luma = 0;
+  bool print_luminance = 0;
   while (true) {
     static struct option long_options[] =
           {
-            {"print-luma",     no_argument,       0, 'l'},
+            {"print-luminance",     no_argument,       0, 'l'},
             {0, 0, 0, 0}
           };
     
@@ -25,18 +25,15 @@ int main(int argc, char *argv[])
       case 0:
         break;
       case 'l':
-      print_luma = true;
+      print_luminance = true;
     }
   }
   get_color(&color, argv[optind++]);
-  double luminance = get_luminance(color);
-  // min: 0
-  // max: 255
-  // a color is dark when luminance <= 127.5 (0.5*max) 
-  if (print_luma) {
+  double luminance = relative_luminance(color);
+  if (print_luminance) {
     printf("%.3f\n", luminance);
   } else {
-    int is_dark = luminance <= 127.5;
+    int is_dark = luminance <= .5;
     printf("%d\n", is_dark);
   }
 

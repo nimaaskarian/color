@@ -36,9 +36,7 @@ int main(int argc, char *argv[])
   get_color(&c1, argv[optind++]);
   get_color(&c2, argv[optind++]);
 
-  double l1 = relative_luminance(c1);
-  double l2 = relative_luminance(c2);
-  double ratio = contrast_ratio(l1, l2);
+  double ratio = contrast_ratio(c1, c2);
   if (wcag_check) {
     if (ratio >= 7.) {
       puts("full AAA pass");

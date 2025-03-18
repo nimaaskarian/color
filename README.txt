@@ -6,7 +6,7 @@ contrast:  prints contrast ratio of two colors
   contrast [Flags] <color-1> <color-2>
 
 [Flags]
-  --wcag-check, -w           check if passes the wcag standard and prints the status
+  --wcag-check, -w                  check if passes the wcag standard and prints the status
 
 
 isdark: prints 1 if the color is dark, 0 if its not
@@ -14,7 +14,7 @@ isdark: prints 1 if the color is dark, 0 if its not
   isdark [Flags] <color>
 
 [Flags]
-  --print-luma, -l           print relative luminance of color instead
+  --print-luminance, -l             print relative luminance of color instead
 
 
 cbetween: prints colors between two colors
@@ -22,5 +22,5 @@ cbetween: prints colors between two colors
   cbetween [Flags] <color-1> <color-2>
 
 [Flags]
-  --include-self, -i         include the colors provided in the beginning and the end of the output
-  --count, -c (default=8)    count of colors between (without the colors themselves).
+  --include-self, -i                include the colors provided in the beginning and the end of the output
+  --count, -c (default=8)           count of colors between (without the colors themselves).
