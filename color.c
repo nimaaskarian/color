@@ -18,7 +18,7 @@ sRGB color2srgb(Color color)
   return output;
 }
 
-Color stdcolor2color(sRGB color)
+Color srgb2color(sRGB color)
 {
   Color output;
   output.r = (int)(color.r*255);
@@ -99,5 +99,5 @@ void print_color(Color color)
 
 void print_srgb(sRGB srgb)
 {
-  print_color(stdcolor2color(srgb));
+  print_color(srgb2color(srgb));
 }
