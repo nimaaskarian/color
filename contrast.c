@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
         break;
     }
   }
-  int opt = 0;
   if (argc - optind < 2) {
     fprintf(stderr, "no colors provided\n");
     exit(EXIT_FAILURE);

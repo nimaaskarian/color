@@ -1,6 +1,5 @@
 *.o
 contrast
 isdark
-color.h
 cbetween
-color.h
+as-rgb

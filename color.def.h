@@ -1,5 +1,5 @@
 typedef struct color {
-  int r, g, b; 
+  unsigned int r, g, b; 
 } Color;
 
 typedef struct srgb {

@@ -25,3 +25,8 @@ cbetween: prints colors between two colors
 [Flags]
   --include-self, -i                include the colors provided in the beginning and the end of the output
   --count, -c (default=8)           count of colors between (without the colors themselves).
+
+
+as-rgb: prints color as rgb
+[Usage]
+  as-rgb <c>

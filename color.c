@@ -79,7 +79,7 @@ int get_color_from_hex(Color *restrict color, char *restrict str)
 
 int get_color_from_rgb(Color *restrict color, char*charPtr)
 {
-  if (sscanf(charPtr, "%d,%d,%d", &color->r, &color->g, &color->b) != 3) {
+  if (sscanf(charPtr, "%u,%u,%u", &color->r, &color->g, &color->b) != 3) {
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
