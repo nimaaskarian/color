@@ -22,19 +22,13 @@ color.h: color.def.h color.c
 
 .gitignore: Makefile
 	echo \*.o > $@
-	for bin in ${BIN}; do \
-		echo $$bin >> $@; \
-	done
+	$(foreach bin, ${BIN}, echo $(bin) >> $@)
 
 clean:
 	rm *.o ${BIN}
 
 install: all
-	cp -f contrast ${DESTDIR}${PREFIX}/bin
-	cp -f isdark ${DESTDIR}${PREFIX}/bin
-	cp -f cbetween ${DESTDIR}${PREFIX}/bin
+	$(foreach bin, ${BIN}, cp -f $(bin) ${DESTDIR}${PREFIX}/bin;)
 
 uninstall:
-	rm ${DESTDIR}${PREFIX}/bin/contrast
-	rm ${DESTDIR}${PREFIX}/bin/isdark
-	rm ${DESTDIR}${PREFIX}/bin/cbetween
+	$(foreach bin, ${BIN}, rm ${DESTDIR}${PREFIX}/bin/$(bin);)
