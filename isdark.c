@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
       print_luminance = true;
     }
   }
-  while (++optind < argc) {
+  for (; optind < argc; optind++) {
     get_color(&color, argv[optind]);
     double luminance = relative_luminance(color);
     if (print_luminance) {
