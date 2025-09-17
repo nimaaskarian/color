@@ -1,6 +1,6 @@
 *.o
-contrast echo isdark echo cbetween echo as-rgb
-as-rgb
-cbetween
 contrast
 isdark
+cbetween
+as-rgb
+isimgdark

@@ -35,7 +35,7 @@ double contrast_ratio(Color c1, Color c2)
    return ( l2 +0.05 )/( l1 +0.05);
 }
 
-void normalize_srgb_for_luma(double *restrict param)
+void normalize_srgb_for_luma(double *param)
 {
   if (*param <= 0.04045)
     *param = *param/12.92;
@@ -55,7 +55,7 @@ double relative_luminance(Color color)
   return 0.2126*srgb.r + 0.7152*srgb.g + 0.0722 * srgb.b;
 }
 
-void three_digit_hex2six(Color *restrict color) 
+void three_digit_hex2six(Color *color) 
 {
   // if its a three digit hex color like #ABC, we want to have
   // #AABBCC so we do this:
@@ -65,7 +65,7 @@ void three_digit_hex2six(Color *restrict color)
   color->b += color->b*16;
 }
 
-int get_color_from_hex(Color *restrict color, char *restrict str)
+int get_color_from_hex(Color *color, char *str)
 {
   int colorsFound = sscanf(str, "#%02x%02x%02x", &color->r,&color->g,&color->b);
   if(colorsFound != 3) {
@@ -77,7 +77,7 @@ int get_color_from_hex(Color *restrict color, char *restrict str)
   return EXIT_SUCCESS;
 }
 
-int get_color_from_rgb(Color *restrict color, char*charPtr)
+int get_color_from_rgb(Color *color, char*charPtr)
 {
   if (sscanf(charPtr, "%u,%u,%u", &color->r, &color->g, &color->b) != 3) {
     return EXIT_FAILURE;
@@ -85,7 +85,7 @@ int get_color_from_rgb(Color *restrict color, char*charPtr)
   return EXIT_SUCCESS;
 }
 
-int get_color(Color *restrict c, char *restrict str)
+int get_color(Color *c, char *str)
 {
   if (get_color_from_hex(c, str) == EXIT_FAILURE)
     return get_color_from_rgb(c, str);

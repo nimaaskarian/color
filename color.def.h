@@ -1,5 +1,8 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef struct color {
-  unsigned int r, g, b; 
+  unsigned char r, g, b; 
 } Color;
 
 typedef struct srgb {
@@ -12,7 +15,7 @@ typedef struct srgb {
   c.r += d.r; \
   c.g += d.g; \
   c.b += d.b; \
-} \
+}
 
 #define color_mul(c, a,m) \
 { \
@@ -20,4 +23,7 @@ typedef struct srgb {
   c.r *= m; \
   c.g *= m; \
   c.b *= m; \
-} \
+}
+#ifdef __cplusplus
+}
+#endif

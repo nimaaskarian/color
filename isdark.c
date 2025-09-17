@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     if (print_luminance) {
       printf("%.3f\n", luminance);
     } else {
-      int is_dark = luminance <= .5;
+      char is_dark = luminance <= .5;
       printf("%d\n", is_dark);
     }
   }
