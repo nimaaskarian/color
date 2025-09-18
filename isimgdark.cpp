@@ -1,6 +1,4 @@
-#include <cstdint>
 #include <iostream>
-#include <vector>
 #include <getopt.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -10,7 +8,7 @@ int main(int argc, char *argv[])
 {
   int c;
   bool null = 0;
-  while (true) {
+  while (!null) {
     static struct option long_options[] =
           {
             {"null",     no_argument,       0, 'l'},

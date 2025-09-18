@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
   difference.g = (c2srgb.g - c1srgb.g)/count;
   difference.b = (c2srgb.b - c1srgb.b)/count;
 
-  for (int i = 1-include_self; i < count+include_self; ++i) {
+  for (unsigned int i = 1-include_self; i < count+include_self; ++i) {
     sRGB color;
     color_mul(color, difference, i);
     color_add(color, color, c1srgb);

@@ -33,6 +33,7 @@ double contrast_ratio(Color c1, Color c2);
 void normalize_srgb_for_luma(double *param);
 double relative_luminance(Color color);
 void three_digit_hex2six(Color *color);
+static inline int read_uint_rgb_to_color(unsigned int r,unsigned int g,unsigned int b, Color *color);
 int get_color_from_hex(Color *color, char *str);
 int get_color_from_rgb(Color *color, char*charPtr);
 int get_color(Color *c, char *str);

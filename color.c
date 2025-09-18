@@ -1,4 +1,6 @@
 #include <math.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "color.h"
@@ -65,21 +67,44 @@ void three_digit_hex2six(Color *color)
   color->b += color->b*16;
 }
 
+static inline int read_uint_rgb_to_color(unsigned int r,unsigned int g,unsigned int b, Color *color)
+{
+  if (r > UINT8_MAX || g > UINT8_MAX || b > UINT8_MAX) {
+    return EXIT_FAILURE;
+  }
+  color->r = (unsigned char)r;
+  color->g = (unsigned char)g;
+  color->b = (unsigned char)b;
+  return EXIT_SUCCESS;
+}
+
 int get_color_from_hex(Color *color, char *str)
 {
-  int colorsFound = sscanf(str, "#%02x%02x%02x", &color->r,&color->g,&color->b);
+  unsigned int r,g,b;
+  bool is_three_digit = false;
+  int colorsFound = sscanf(str, "#%02x%02x%02x", &r,&g,&b);
   if(colorsFound != 3) {
-    if (colorsFound == 2 && sscanf(str,"#%01x%01x%01x",&color->r,&color->g, &color->b) == 3) {
-      three_digit_hex2six(color);
+    if (colorsFound == 2 && sscanf(str,"#%01x%01x%01x",&r,&g, &b) == 3) {
+      is_three_digit = true;
     } else
       return EXIT_FAILURE;
+  }
+  if (read_uint_rgb_to_color(r, g, b, color)) {
+    return EXIT_FAILURE;
+  }
+  if (is_three_digit) {
+      three_digit_hex2six(color);
   }
   return EXIT_SUCCESS;
 }
 
 int get_color_from_rgb(Color *color, char*charPtr)
 {
-  if (sscanf(charPtr, "%u,%u,%u", &color->r, &color->g, &color->b) != 3) {
+  unsigned int r,g,b;
+  if (sscanf(charPtr, "%u,%u,%u", &r, &g, &b) != 3) {
+    return EXIT_FAILURE;
+  }
+  if (read_uint_rgb_to_color(r, g, b, color)) {
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;

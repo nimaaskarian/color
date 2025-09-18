@@ -1,10 +1,11 @@
 PREFIX  := /usr/local
-INCS     = $(shell pkg-config --cflags opencv4)
-LIBS    := -lm -lopencv_core -lopencv_imgcodecs
-CFLAGS  := -std=c++23 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3 ${INCS}
+IMGLIBS := -lopencv_core -lopencv_imgcodecs
+IMGINCS     = $(shell pkg-config --cflags opencv4)
+LIBS    := -lm
+CFLAGS  := -std=c++23 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3
 LDFLAGS := ${LIBS}
 
-BIN := contrast isdark cbetween as-rgb  isimgdark
+BIN := contrast isdark cbetween as-rgb isimgdark
 CC := g++
 
 all: .gitignore color.h color.o ${BIN}
@@ -12,11 +13,14 @@ all: .gitignore color.h color.o ${BIN}
 $(BIN): %: %.o
 	${CC} -o $@ color.o $< ${LDFLAGS}
 
-%.o: %.c
+isimgdark: isimgdark.o
+	${CC} -o $@ color.o $< ${IMGLIBS}
+
+.c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.cpp
-	g++ $(CFLAGS) -c $< -o $@
+isimgdark.o: isimgdark.cpp
+	$(CC) $(CFLAGS) $(IMGINCS) -c $< -o $@
 
 color.h: color.def.h color.c
 	echo '#ifndef COLOR_H' > $@
@@ -37,7 +41,7 @@ color.h: color.def.h color.c
 
 .PHONY: clean
 clean:
-	rm *.o ${BIN} || return 0
+	rm -f *.o ${BIN} || return 0
 
 install: all
 	$(foreach bin, ${BIN}, cp -f $(bin) ${DESTDIR}${PREFIX}/bin;)
