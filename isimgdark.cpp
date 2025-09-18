@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <execution>
 #include <getopt.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -26,33 +28,27 @@ int main(int argc, char *argv[])
       null = true;
     }
   }
-  for (; optind < argc; optind++) {
-    cv::Mat img = cv::imread(argv[optind]);
-    if (img.empty()) {
-        std::cerr << "error: failed to load image\n";
-        continue;
-    }
-
-    if (img.type() != CV_8UC3) {
-        std::cerr << "error: image is not 8-bit 3-channel\n";
-        continue;
-    }
-    int dark = 0;
-    img.forEach<cv::Vec3b>([&dark](cv::Vec3b &pixel, const int * position) {
-        Color color = {pixel[2], pixel[1], pixel[0]};
-        double luminance = relative_luminance(color);
-        if (luminance < .5) {
-          dark+=1;
-        } else {
-          dark-=1;
+  // std::for_each
+   std::vector<char*> items(argv + optind, argv + argc);
+   std::for_each(std::execution::par, items.begin(), items.end(), [null](char* s) {
+          cv::Mat img = cv::imread(s);
+          if (img.empty()) {
+              std::cerr << "error: failed to load image\n";
+              return;
+          }
+          cv::Mat img_srgb;
+          img.convertTo(img_srgb, CV_32F, 1.0/255);
+          std::vector<cv::Mat> bgr;
+          cv::split(img_srgb, bgr);
+          cv::Mat luminance_matrix = relative_luminance_rgb(bgr[2], bgr[1], bgr[0]);
+          double luminance = cv::mean(luminance_matrix)[0];
+          bool isdark = luminance < 0.5;
+          if (null) {
+            std::cout << isdark << ' ' << s << '\0';
+          } else {
+            std::cout << isdark << ' ' << s << std::endl;
+          }
         }
-    });
-    bool isdark = dark > 0;
-    if (null) {
-      std::cout << isdark << ' ' << argv[optind] << '\0';
-    } else {
-      std::cout << isdark << ' ' << argv[optind] << std::endl;
-    }
-  }
+    );
   return 0;
 }

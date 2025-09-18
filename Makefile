@@ -1,5 +1,5 @@
 PREFIX  := /usr/local
-IMGLIBS := -lopencv_core -lopencv_imgcodecs
+IMGLIBS := -lopencv_core -lopencv_imgcodecs $(shell pkg-config --libs tbb)
 IMGINCS     = $(shell pkg-config --cflags opencv4)
 LIBS    := -lm
 CFLAGS  := -std=c++23 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3

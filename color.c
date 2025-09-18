@@ -54,7 +54,7 @@ double relative_luminance(Color color)
   normalize_srgb_for_luma(&srgb.g);
   normalize_srgb_for_luma(&srgb.b);
 
-  return 0.2126*srgb.r + 0.7152*srgb.g + 0.0722 * srgb.b;
+  return relative_luminance_rgb(srgb.r, srgb.g, srgb.b);
 }
 
 void three_digit_hex2six(Color *color) 
