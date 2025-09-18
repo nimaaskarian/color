@@ -36,4 +36,4 @@ isimgdark: prints 1 if the image is dark, 0 if its not
 isimgdark [Flags] <img1> <img2> ... <imgn>
 
 [Flags]
-  --null, -l                        print null delimited lines, instead of newlines. corresponds to grep -z, cut -z, xargs -0
+  --null, -0                        print null delimited lines, instead of newlines. corresponds to grep -z, cut -z, xargs -0
