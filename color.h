@@ -17,7 +17,7 @@ typedef struct srgb {
   c.r += d.r; \
   c.g += d.g; \
   c.b += d.b; \
-} \
+}
 
 #define color_mul(c, a,m) \
 { \
@@ -25,7 +25,7 @@ typedef struct srgb {
   c.r *= m; \
   c.g *= m; \
   c.b *= m; \
-} \
+}
 Color black();
 sRGB color2srgb(Color color);
 Color srgb2color(sRGB color);
@@ -38,7 +38,7 @@ int get_color_from_rgb(Color *color, char*charPtr);
 int get_color(Color *c, char *str);
 void print_color(Color color);
 void print_srgb(sRGB srgb);
+#endif //COLOR_H
 #ifdef __cplusplus
 }
 #endif
-#endif //COLOR_H

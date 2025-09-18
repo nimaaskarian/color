@@ -1,6 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
 typedef struct color {
   unsigned char r, g, b; 
 } Color;
@@ -24,6 +21,3 @@ typedef struct srgb {
   c.g *= m; \
   c.b *= m; \
 }
-#ifdef __cplusplus
-}
-#endif
