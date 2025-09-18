@@ -39,18 +39,19 @@ int main(int argc, char *argv[])
     }
     int dark = 0;
     img.forEach<cv::Vec3b>([&dark](cv::Vec3b &pixel, const int * position) {
-        Color color = {pixel[0], pixel[1], pixel[2]};
+        Color color = {pixel[2], pixel[1], pixel[0]};
         double luminance = relative_luminance(color);
-        if (luminance <= .5) {
+        if (luminance < .5) {
           dark+=1;
         } else {
           dark-=1;
         }
     });
+    bool isdark = dark > 0;
     if (null) {
-      std::cout << (dark > 0) << ' ' << argv[optind] << '\0';
+      std::cout << isdark << ' ' << argv[optind] << '\0';
     } else {
-      std::cout << (dark > 0) << ' ' << argv[optind] << std::endl;
+      std::cout << isdark << ' ' << argv[optind] << std::endl;
     }
   }
   return 0;
