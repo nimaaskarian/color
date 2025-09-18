@@ -9,28 +9,37 @@
 int main(int argc, char *argv[])
 {
   int c;
-  bool null = 0;
-  while (!null) {
+  bool nulldelimited = 0;
+  bool print_luminance = 0;
+  while (!nulldelimited || !print_luminance) {
     static struct option long_options[] =
           {
-            {"null",     no_argument,       0, 'l'},
+            {"null",     no_argument,       0, '0'},
+            {"luminance",     no_argument,       0, 'l'},
             {0, 0, 0, 0}
           };
     
-    c = getopt_long (argc, argv, "0", long_options, 0);
+    c = getopt_long (argc, argv, "0l", long_options, 0);
     if (c == -1) {
       break;
     }
     switch (c) {
       case 0:
         break;
+      case '0':
+      nulldelimited = true;
       case 'l':
-      null = true;
+      print_luminance = true;
     }
   }
-  // std::for_each
+  char end;
+  if (nulldelimited) {
+    end =  '\0';
+  } else {
+    end = '\n';
+  }
    std::vector<char*> items(argv + optind, argv + argc);
-   std::for_each(std::execution::par, items.begin(), items.end(), [null](char* s) {
+   std::for_each(std::execution::par, items.begin(), items.end(), [end, print_luminance](char* s) {
           cv::Mat img = cv::imread(s);
           if (img.empty()) {
               std::cerr << "error: failed to load image\n";
@@ -43,10 +52,10 @@ int main(int argc, char *argv[])
           cv::Mat luminance_matrix = relative_luminance_rgb(bgr[2], bgr[1], bgr[0]);
           double luminance = cv::mean(luminance_matrix)[0];
           bool isdark = luminance < 0.5;
-          if (null) {
-            std::cout << isdark << ' ' << s << '\0';
+          if (print_luminance) {
+            std::cout << luminance << ' ' << s << end;
           } else {
-            std::cout << isdark << ' ' << s << std::endl;
+            std::cout << isdark << ' ' << s << end;
           }
         }
     );

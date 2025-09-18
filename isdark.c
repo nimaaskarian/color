@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
   while (true) {
     static struct option long_options[] =
           {
-            {"print-luminance",     no_argument,       0, 'l'},
+            {"luminance",     no_argument,       0, 'l'},
             {0, 0, 0, 0}
           };
     

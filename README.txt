@@ -15,7 +15,7 @@ isdark: prints 1 if the color is dark, 0 if its not
   isdark [Flags] <c-1> <c-2> ... <c-n>
 
 [Flags]
-  --print-luminance, -l             print relative luminance of color instead
+  --luminance, -l                   print relative luminance of color instead
 
 
 cbetween: prints colors between two colors
@@ -37,3 +37,4 @@ isimgdark [Flags] <img1> <img2> ... <imgn>
 
 [Flags]
   --null, -0                        print null delimited lines, instead of newlines. corresponds to grep -z, cut -z, xargs -0
+  --luminance, -l                   print relative luminance of image instead
