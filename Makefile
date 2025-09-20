@@ -39,7 +39,7 @@ color.h: color.def.h color.c
 
 .gitignore: Makefile
 	echo \*.o > $@
-	echo ${BIN} ${BIN_CPP} | tr ' ' '\n' >> $@
+	printf "%s\n" ${BIN} ${BIN_CPP} >> $@
 
 .PHONY: clean
 clean:

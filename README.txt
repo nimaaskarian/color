@@ -3,7 +3,7 @@ simple set of cli utilities to compute color contrast and relative luminance
 
 contrast:  prints contrast ratio of two colors
 [Usage]
-  contrast [Flags] <c1> <c-2>
+  contrast [Flags] <c1> <c2>
 
 [Flags]
   --wcag-check, -w                  check if passes the WCAG 2.x standard and prints the status
