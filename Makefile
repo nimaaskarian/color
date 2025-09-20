@@ -1,25 +1,27 @@
 PREFIX  := /usr/local
-IMGLIBS := -lopencv_core -lopencv_imgcodecs $(shell pkg-config --libs tbb)
-IMGINCS     = $(shell pkg-config --cflags opencv4)
+IMGLIBS := $(shell pkg-config --libs opencv4) $(shell pkg-config --libs tbb)
+IMGINCS  = $(shell pkg-config --cflags opencv4)
 LIBS    := -lm
-CFLAGS  := -std=c++23 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3
+CFLAGS  := -std=c++20 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3
 LDFLAGS := ${LIBS}
 
-BIN := contrast isdark cbetween as-rgb isimgdark
+BIN_CPP := isimgdark wal
+BIN := contrast isdark gradient as-rgb
 CC := g++
+OBJ_CPP := ${BIN_CPP:=.o}
 
-all: .gitignore color.h color.o ${BIN}
+all: .gitignore color.h color.o ${BIN} ${BIN_CPP}
 
 $(BIN): %: %.o
 	${CC} -o $@ color.o $< ${LDFLAGS}
 
-isimgdark: isimgdark.o
+${BIN_CPP}: %: %.o
 	${CC} -o $@ color.o $< ${IMGLIBS}
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-isimgdark.o: isimgdark.cpp
+${OBJ_CPP}: %.o: %.cpp
 	$(CC) $(CFLAGS) $(IMGINCS) -c $< -o $@
 
 color.h: color.def.h color.c
@@ -37,7 +39,7 @@ color.h: color.def.h color.c
 
 .gitignore: Makefile
 	echo \*.o > $@
-	echo ${BIN} | tr ' ' '\n' >> $@
+	echo ${BIN} ${BIN_CPP} | tr ' ' '\n' >> $@
 
 .PHONY: clean
 clean:

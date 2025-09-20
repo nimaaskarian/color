@@ -13,6 +13,20 @@ typedef struct srgb {
 
 #define relative_luminance_rgb(r, g, b) (0.2126*(r)) + (0.7152*(g)) + (0.0722 * (b))
 
+#define NORMALIZE_THRESHOLD 0.04045
+#define NORMALIZE_LOWER_DIVIDE 12.92
+#define NORMALIZE_UPPER_ADD 0.055
+#define NORMALIZE_UPPER_DIVIDE 1.055
+#define NORMALIZE_UPPER_POW 2.4
+#define normalize_srgb_for_luma(param) \
+{ \
+  if (param <= NORMALIZE_THRESHOLD) \
+    param = param/NORMALIZE_LOWER_DIVIDE; \
+  else \
+    param = pow(((param+NORMALIZE_UPPER_ADD)/NORMALIZE_UPPER_DIVIDE), NORMALIZE_UPPER_POW); \
+ \
+}
+
 #define color_add(c, a,d) \
 { \
   c = a; \
@@ -32,7 +46,6 @@ Color black();
 sRGB color2srgb(Color color);
 Color srgb2color(sRGB color);
 double contrast_ratio(Color c1, Color c2);
-void normalize_srgb_for_luma(double *param);
 double relative_luminance(Color color);
 void three_digit_hex2six(Color *color);
 static inline int read_uint_rgb_to_color(unsigned int r,unsigned int g,unsigned int b, Color *color);

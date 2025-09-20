@@ -8,6 +8,7 @@
 
 int main(int argc, char *argv[])
 {
+  using namespace cv;
   int c;
   bool nulldelimited = 0;
   bool print_luminance = 0;
@@ -39,22 +40,30 @@ int main(int argc, char *argv[])
     end = '\n';
   }
   std::for_each(std::execution::par, argv + optind, argv + argc, [end, print_luminance](char* s) {
-    cv::Mat img = cv::imread(s);
+    Mat img = imread(s);
     if (img.empty()) {
         std::cerr << "error: failed to load image\n";
         return;
     }
-    cv::Mat img_srgb;
+    Mat img_srgb;
     img.convertTo(img_srgb, CV_32F, 1.0/255);
-    std::vector<cv::Mat> bgr;
-    cv::split(img_srgb, bgr);
-    cv::Mat luminance_matrix = relative_luminance_rgb(bgr[2], bgr[1], bgr[0]);
-    double luminance = cv::mean(luminance_matrix)[0];
-    bool isdark = luminance < 0.5;
+    Mat mask = img_srgb <= NORMALIZE_THRESHOLD;
+    Mat lower, upper;
+    Mat tmp = (img_srgb + NORMALIZE_UPPER_ADD) / NORMALIZE_UPPER_DIVIDE;
+    pow(tmp, NORMALIZE_UPPER_POW, upper);
+    divide(img_srgb, NORMALIZE_LOWER_DIVIDE, lower);
+    Mat linear = Mat::zeros(img_srgb.size(), img_srgb.type());
+    upper.copyTo(linear);
+    lower.copyTo(linear, mask);
+    std::vector<Mat> bgr;
+    split(linear, bgr);
+
+    Mat luminance_matrix = relative_luminance_rgb(bgr[2], bgr[1], bgr[0]);
+    double luminance = mean(luminance_matrix)[0];
     if (print_luminance) {
       std::cout << luminance << ' ' << s << end;
     } else {
-      std::cout << isdark << ' ' << s << end;
+      std::cout << (luminance < 0.5) << ' ' << s << end;
     }
   });
   return 0;

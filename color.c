@@ -37,22 +37,14 @@ double contrast_ratio(Color c1, Color c2)
    return ( l2 +0.05 )/( l1 +0.05);
 }
 
-void normalize_srgb_for_luma(double *param)
-{
-  if (*param <= 0.04045)
-    *param = *param/12.92;
-  else
-    *param = pow(((*param+0.055)/1.055), 2.4);
-
-}
 double relative_luminance(Color color)
 {
 
   sRGB srgb = color2srgb(color);
 
-  normalize_srgb_for_luma(&srgb.r);
-  normalize_srgb_for_luma(&srgb.g);
-  normalize_srgb_for_luma(&srgb.b);
+  normalize_srgb_for_luma(srgb.r);
+  normalize_srgb_for_luma(srgb.g);
+  normalize_srgb_for_luma(srgb.b);
 
   return relative_luminance_rgb(srgb.r, srgb.g, srgb.b);
 }

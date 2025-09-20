@@ -1,6 +1,7 @@
 *.o
 contrast
 isdark
-cbetween
+gradient
 as-rgb
 isimgdark
+wal
