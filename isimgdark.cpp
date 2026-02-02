@@ -10,17 +10,18 @@ int main(int argc, char *argv[])
 {
   using namespace cv;
   int c;
-  bool nulldelimited = 0;
-  bool print_luminance = 0;
+  bool nulldelimited = 0, print_luminance = 0;
+  double threshold = 0.5;
   while (!nulldelimited || !print_luminance) {
     static struct option long_options[] =
           {
             {"null",     no_argument,       0, '0'},
             {"luminance",     no_argument,       0, 'l'},
+            {"threshold",     required_argument,       0, 't'},
             {0, 0, 0, 0}
           };
     
-    c = getopt_long (argc, argv, "0l", long_options, 0);
+    c = getopt_long (argc, argv, "0lt:", long_options, 0);
     if (c == -1) {
       break;
     }
@@ -28,9 +29,14 @@ int main(int argc, char *argv[])
       case 0:
         break;
       case '0':
-      nulldelimited = true;
+        nulldelimited = true;
+      break;
       case 'l':
-      print_luminance = true;
+        print_luminance = true;
+      break;
+      case 't':
+        threshold = atof(optarg);
+      break;
     }
   }
   char end;
@@ -39,20 +45,19 @@ int main(int argc, char *argv[])
   } else {
     end = '\n';
   }
-  std::for_each(std::execution::par, argv + optind, argv + argc, [end, print_luminance](char* s) {
+  std::for_each(std::execution::par, argv + optind, argv + argc, [end, print_luminance, threshold](char* s) {
     Mat img = imread(s);
     if (img.empty()) {
         std::cerr << "error: failed to load image\n";
         return;
     }
-    Mat img_srgb;
-    img.convertTo(img_srgb, CV_32F, 1.0/255);
-    Mat mask = img_srgb <= NORMALIZE_THRESHOLD;
+    img.convertTo(img, CV_32F, 1.0/255.0);
+    Mat mask = img <= NORMALIZE_THRESHOLD;
     Mat lower, upper;
-    Mat tmp = (img_srgb + NORMALIZE_UPPER_ADD) / NORMALIZE_UPPER_DIVIDE;
+    Mat tmp = (img + NORMALIZE_UPPER_ADD) / NORMALIZE_UPPER_DIVIDE;
     pow(tmp, NORMALIZE_UPPER_POW, upper);
-    divide(img_srgb, NORMALIZE_LOWER_DIVIDE, lower);
-    Mat linear = Mat::zeros(img_srgb.size(), img_srgb.type());
+    divide(img, NORMALIZE_LOWER_DIVIDE, lower);
+    Mat linear = Mat::zeros(img.size(), img.type());
     upper.copyTo(linear);
     lower.copyTo(linear, mask);
     std::vector<Mat> bgr;
@@ -63,8 +68,9 @@ int main(int argc, char *argv[])
     if (print_luminance) {
       std::cout << luminance << ' ' << s << end;
     } else {
-      std::cout << (luminance < 0.5) << ' ' << s << end;
+      std::cout << (luminance < threshold) << ' ' << s << end;
     }
+    std::cout.flush();
   });
   return 0;
 }

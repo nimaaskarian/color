@@ -5,7 +5,7 @@ LIBS    := -lm
 CFLAGS  := -std=c++20 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3
 LDFLAGS := ${LIBS}
 
-BIN_CPP := isimgdark wal
+BIN_CPP := isimgdark
 BIN := contrast isdark gradient as-rgb
 CC := g++
 OBJ_CPP := ${BIN_CPP:=.o}
@@ -46,7 +46,7 @@ clean:
 	rm -f *.o ${BIN} || return 0
 
 install: all
-	$(foreach bin, ${BIN}, cp -f $(bin) ${DESTDIR}${PREFIX}/bin;)
+	$(foreach bin, ${BIN} ${BIN_CPP}, cp -f $(bin) ${DESTDIR}${PREFIX}/bin;)
 
 uninstall:
-	$(foreach bin, ${BIN}, rm ${DESTDIR}${PREFIX}/bin/$(bin);)
+	$(foreach bin, ${BIN} ${BIN_CPP}, rm ${DESTDIR}${PREFIX}/bin/$(bin);)
