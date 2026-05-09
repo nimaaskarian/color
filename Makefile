@@ -5,7 +5,7 @@ LIBS    := -lm
 CFLAGS  := -std=c++20 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3
 LDFLAGS := ${LIBS}
 
-BIN_CPP := isimgdark
+BIN_CPP := isimgdark closestpalette
 BIN := contrast isdark gradient as-rgb
 CC := g++
 OBJ_CPP := ${BIN_CPP:=.o}
