@@ -1,6 +1,6 @@
 PREFIX  := /usr/local
-IMGLIBS := $(shell pkg-config --libs opencv4) $(shell pkg-config --libs tbb)
-IMGINCS  = $(shell pkg-config --cflags opencv4)
+IMGLIBS := $(shell pkg-config --libs opencv5) $(shell pkg-config --libs tbb)
+IMGINCS  = $(shell pkg-config --cflags opencv5)
 LIBS    := -lm
 CFLAGS  := -std=c++20 -pedantic -Wall -Wno-unused-function -Wno-deprecated-declarations -O3
 LDFLAGS := ${LIBS}
